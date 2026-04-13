@@ -343,7 +343,7 @@
 // This URL fetches your Google Sheet as CSV. The sheet must be published:
 // File → Share → Publish to web → Sheet1 → CSV → Publish
 const SHEET_ID = '1Ls_h48lYCXeAhtC8TL5QLNPLsLo8iUZFtPf5VXXoJXM';
-const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+const CSV_URL = `https://corsproxy.io/?url=${encodeURIComponent(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`)}`;
 // ────────────────────────────────────────────────────────────────────────────
 
 const PILLAR_COLORS = {
