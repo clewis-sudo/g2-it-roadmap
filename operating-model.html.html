@@ -1,97 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Operating Model — G2</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<style>
-  .tb { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: var(--border-radius-md); display: inline-block; }
-  .tb-purple { background: #EEEDFE; color: #3C3489; }
-  .tb-teal   { background: #E1F5EE; color: #085041; }
-  .tb-amber  { background: #FAEEDA; color: #633806; }
-  .sec { margin-bottom: 32px; }
-  .sh { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-  .st { font-size: 18px; font-weight: 500; color: var(--color-text-primary); margin: 0; }
-  .sd { font-size: 13px; color: var(--color-text-secondary); margin: 0 0 14px; line-height: 1.6; }
-  .wf { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 14px 16px; margin-bottom: 10px; }
-  .wft { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.04em; }
-  .steps { display: flex; flex-wrap: wrap; gap: 6px; align-items: flex-start; }
-  .step { display: flex; align-items: flex-start; gap: 6px; flex: 1 1 120px; min-width: 110px; }
-  .sn { width: 20px; height: 20px; border-radius: 50%; font-size: 10px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-  .sn-p { background: #EEEDFE; color: #3C3489; }
-  .sn-t { background: #E1F5EE; color: #085041; }
-  .sn-a { background: #FAEEDA; color: #633806; }
-  .sb { flex: 1; }
-  .sl { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; }
-  .ss { font-size: 12px; color: var(--color-text-secondary); margin: 0; line-height: 1.45; }
-  .arr { font-size: 12px; color: var(--color-text-tertiary); padding-top: 4px; flex-shrink: 0; }
-  .step:last-child .arr { display: none; }
-  hr.div { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 28px 0; }
-</style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #f5f4f0;
+      padding: 40px 20px 80px;
+    }
 
-<h2 class="sr-only">IT Operating Model — lean preview with tier summaries and workflows only</h2>
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+    }
 
-<div class="sec">
-  <div class="sh"><span class="tb tb-purple">Strategic</span><p class="st">Direction & investment</p></div>
-  <p class="sd">Cameron owns this tier in partnership with the CFO. Work here shapes multi-quarter priorities: OKR alignment, vendor portfolio decisions, AI roadmap, and org design. Output is a funded plan and executive alignment — not day-to-day execution.</p>
+    /* Header */
+    .page-header {
+      margin-bottom: 36px;
+    }
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 4px;
+    }
+    .page-meta {
+      font-size: 13px;
+      color: #888;
+    }
+    .nav-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #3b6fd4;
+      text-decoration: none;
+    }
+    .nav-link:hover { text-decoration: underline; }
 
-  <div class="wf">
-    <p class="wft">Strategic decision & approval</p>
-    <div class="steps">
-      <div class="step"><span class="sn sn-p">1</span><div class="sb"><p class="sl">Identify</p><p class="ss">Cameron spots need: new direction, consolidation opportunity, or org change.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-p">2</span><div class="sb"><p class="sl">Build case</p><p class="ss">Cost-benefit, OKR tie, risk. InfoSec review if security implications.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-p">3</span><div class="sb"><p class="sl">CFO alignment</p><p class="ss">Cameron presents to Alex Bradley. Contracts >$10K require DocuSign sign-off.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-p">4</span><div class="sb"><p class="sl">Execute & track</p><p class="ss">Added to FY27 IT strategy, Jira epic created, reported weekly in State of IT.</p></div></div>
+    /* Tier section */
+    .tier { margin-bottom: 40px; }
+
+    .tier-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid #e0ddd6;
+    }
+    .tier-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.03em;
+    }
+    .badge-purple { background: #EEEDFE; color: #3C3489; }
+    .badge-teal   { background: #E1F5EE; color: #085041; }
+    .badge-amber  { background: #FAEEDA; color: #633806; }
+
+    .tier-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .tier-summary {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 16px;
+      line-height: 1.65;
+      max-width: 720px;
+    }
+
+    /* Workflow block */
+    .workflow {
+      background: #fff;
+      border: 0.5px solid #ddd;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+    }
+    .workflow-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 14px;
+    }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      flex: 1 1 140px;
+      min-width: 130px;
+    }
+    .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .num-purple { background: #EEEDFE; color: #3C3489; }
+    .num-teal   { background: #E1F5EE; color: #085041; }
+    .num-amber  { background: #FAEEDA; color: #633806; }
+
+    .step-body { flex: 1; }
+    .step-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 2px;
+    }
+    .step-desc {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.45;
+    }
+    .step-arrow {
+      font-size: 13px;
+      color: #ccc;
+      padding-top: 3px;
+      flex-shrink: 0;
+    }
+
+    /* Divider */
+    hr {
+      border: none;
+      border-top: 0.5px solid #ddd;
+      margin: 36px 0;
+    }
+
+    /* Footer */
+    .footer {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 0.5px solid #ddd;
+    }
+
+    @media (max-width: 600px) {
+      .step { flex: 1 1 100%; }
+      .step-arrow { display: none; }
+      .tier-title { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="page-header">
+    <h1>IT Operating Model</h1>
+    <p class="page-meta">Owner: Cameron Lewis &nbsp;·&nbsp; Last updated: April 2026</p>
+    <a class="nav-link" href="/g2-it-roadmap/">← Back to IT Roadmap</a>
+  </div>
+
+  <!-- STRATEGIC -->
+  <div class="tier">
+    <div class="tier-header">
+      <span class="tier-badge badge-purple">Strategic</span>
+      <span class="tier-title">Direction &amp; investment</span>
+    </div>
+    <p class="tier-summary">Cameron owns this tier in partnership with the CFO. Work here shapes multi-quarter priorities: OKR alignment, vendor portfolio decisions, AI roadmap, and org design. Output is a funded plan and executive alignment — not day-to-day execution.</p>
+
+    <div class="workflow">
+      <p class="workflow-title">Strategic decision &amp; approval</p>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num num-purple">1</span>
+          <div class="step-body">
+            <p class="step-label">Identify</p>
+            <p class="step-desc">Cameron spots need: new direction, consolidation opportunity, or org change.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-purple">2</span>
+          <div class="step-body">
+            <p class="step-label">Build case</p>
+            <p class="step-desc">Cost-benefit, OKR tie, risk. InfoSec review if security implications.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-purple">3</span>
+          <div class="step-body">
+            <p class="step-label">CFO alignment</p>
+            <p class="step-desc">Cameron presents to Alex Bradley. Contracts &gt;$10K require DocuSign sign-off.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-purple">4</span>
+          <div class="step-body">
+            <p class="step-label">Execute &amp; track</p>
+            <p class="step-desc">Added to FY27 IT strategy, Jira epic created, reported weekly in State of IT.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <hr>
+
+  <!-- TACTICAL -->
+  <div class="tier">
+    <div class="tier-header">
+      <span class="tier-badge badge-teal">Tactical</span>
+      <span class="tier-title">Program &amp; project execution</span>
+    </div>
+    <p class="tier-summary">The team owns this tier. Active GDM migration workstreams, app migrations, and office buildouts live here — work with defined owners, deadlines, and Jira tracking. Two core workflows: new project intake and vendor/tool procurement.</p>
+
+    <div class="workflow">
+      <p class="workflow-title">New project intake</p>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num num-teal">1</span>
+          <div class="step-body">
+            <p class="step-label">Scope</p>
+            <p class="step-desc">Cameron or lead scopes owners, deadline, dependencies. Jira epic created.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-teal">2</span>
+          <div class="step-body">
+            <p class="step-label">Security check</p>
+            <p class="step-desc">John Wheeler reviews if new vendor or data access involved. Gartner review if TSA-related.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-teal">3</span>
+          <div class="step-body">
+            <p class="step-label">Assign &amp; execute</p>
+            <p class="step-desc">Lead engineer assigned, tickets pulled into sprint. Blockers surfaced immediately.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-teal">4</span>
+          <div class="step-body">
+            <p class="step-label">Validate</p>
+            <p class="step-desc">Stakeholder sign-off. Gartner app deprovisioned if applicable.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-teal">5</span>
+          <div class="step-body">
+            <p class="step-label">Close &amp; doc</p>
+            <p class="step-desc">Epic closed. Runbook updated. Outcome in State of IT.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="workflow">
+      <p class="workflow-title">Vendor / tool procurement</p>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num num-teal">1</span>
+          <div class="step-body">
+            <p class="step-label">Request</p>
+            <p class="step-desc">Business owner submits via G2 Assist: business case, spend estimate, data classification.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-teal">2</span>
+          <div class="step-body">
+            <p class="step-label">Security review</p>
+            <p class="step-desc">Cameron routes to John Wheeler. Gartner security review if TSA-connected.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-teal">3</span>
+          <div class="step-body">
+            <p class="step-label">Approve</p>
+            <p class="step-desc">Cameron approves &lt;$10K. CFO required above threshold. DocuSign for contract.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-teal">4</span>
+          <div class="step-body">
+            <p class="step-label">Provision</p>
+            <p class="step-desc">Alex L. provisions in Okta. Tool logged in vendor registry. Nudge Security monitors.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- KLO -->
+  <div class="tier">
+    <div class="tier-header">
+      <span class="tier-badge badge-amber">KLO</span>
+      <span class="tier-title">Keep the lights on</span>
+    </div>
+    <p class="tier-summary">Johnny and Suraj own frontline triage; Alex L. handles IAM; Nick handles devices and infrastructure. Rovo/G2 Assist auto-resolves ~85% of software access tickets before any human touches them. This tier runs continuously — it's the baseline that makes everything else possible.</p>
+
+    <div class="workflow">
+      <p class="workflow-title">IT service request</p>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num num-amber">1</span>
+          <div class="step-body">
+            <p class="step-label">Submit</p>
+            <p class="step-desc">User submits via G2 Assist or #it-help. Rovo auto-resolves ~85% of software access requests.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-amber">2</span>
+          <div class="step-body">
+            <p class="step-label">Triage</p>
+            <p class="step-desc">Johnny (or Suraj for India) sets priority. IAM tickets → Alex L.; infra/device → Nick.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-amber">3</span>
+          <div class="step-body">
+            <p class="step-label">Resolve</p>
+            <p class="step-desc">Engineer resolves per SLA. New patterns → runbook update in Confluence.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-amber">4</span>
+          <div class="step-body">
+            <p class="step-label">Close</p>
+            <p class="step-desc">Ticket closed in Jira SM. Metrics roll up to weekly State of IT.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="workflow">
+      <p class="workflow-title">Employee onboarding / offboarding</p>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num num-amber">1</span>
+          <div class="step-body">
+            <p class="step-label">HR trigger</p>
+            <p class="step-desc">People team submits ticket with start/end date, role, location, and manager.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-amber">2</span>
+          <div class="step-body">
+            <p class="step-label">Device</p>
+            <p class="step-desc">Nick stages MacBook via ABM. Suraj handles India. Ships 5 days before start.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-amber">3</span>
+          <div class="step-body">
+            <p class="step-label">Access</p>
+            <p class="step-desc">Alex L. creates Okta account, assigns groups, provisions JIT/SCIM apps. 1Password Day 1.</p>
+          </div>
+          <span class="step-arrow">›</span>
+        </div>
+        <div class="step">
+          <span class="step-num num-amber">4</span>
+          <div class="step-body">
+            <p class="step-label">Offboard</p>
+            <p class="step-desc">Okta suspended immediately. Kandji MDM wipe. SaaS de-provisioned. Asset logged in Oomnitza.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    G2 IT · Page owner: Cameron Lewis · Questions? Submit via G2 Assist or #it-help
+  </div>
+
 </div>
-
-<hr class="div">
-
-<div class="sec">
-  <div class="sh"><span class="tb tb-teal">Tactical</span><p class="st">Program & project execution</p></div>
-  <p class="sd">The team owns this tier. Active GDM migration workstreams, app migrations, and office buildouts live here — work with defined owners, deadlines, and Jira tracking. Two core workflows: new project intake and vendor/tool procurement.</p>
-
-  <div class="wf">
-    <p class="wft">New project intake</p>
-    <div class="steps">
-      <div class="step"><span class="sn sn-t">1</span><div class="sb"><p class="sl">Scope</p><p class="ss">Cameron or lead scopes owners, deadline, dependencies. Jira epic created.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-t">2</span><div class="sb"><p class="sl">Security check</p><p class="ss">John Wheeler reviews if new vendor or data access involved. Gartner review if TSA-related.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-t">3</span><div class="sb"><p class="sl">Assign & execute</p><p class="ss">Lead engineer assigned, tickets pulled into sprint. Blockers surfaced immediately.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-t">4</span><div class="sb"><p class="sl">Validate</p><p class="ss">Stakeholder sign-off. Gartner app deprovisioned if applicable.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-t">5</span><div class="sb"><p class="sl">Close & doc</p><p class="ss">Epic closed. Runbook updated. Outcome in State of IT.</p></div></div>
-    </div>
-  </div>
-
-  <div class="wf">
-    <p class="wft">Vendor / tool procurement</p>
-    <div class="steps">
-      <div class="step"><span class="sn sn-t">1</span><div class="sb"><p class="sl">Request</p><p class="ss">Business owner submits via G2 Assist: business case, spend estimate, data classification.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-t">2</span><div class="sb"><p class="sl">Security review</p><p class="ss">Cameron routes to John Wheeler. Gartner security review if TSA-connected.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-t">3</span><div class="sb"><p class="sl">Approve</p><p class="ss">Cameron approves <$10K. CFO required above threshold. DocuSign for contract.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-t">4</span><div class="sb"><p class="sl">Provision</p><p class="ss">Alex L. provisions in Okta. Tool logged in vendor registry. Nudge Security monitors.</p></div></div>
-    </div>
-  </div>
-</div>
-
-<hr class="div">
-
-<div class="sec">
-  <div class="sh"><span class="tb tb-amber">KLO</span><p class="st">Keep the lights on</p></div>
-  <p class="sd">Johnny and Suraj own frontline triage; Alex L. handles IAM; Nick handles devices and infrastructure. Rovo/G2 Assist auto-resolves ~85% of software access tickets before any human touches them. This tier runs continuously — it's the baseline that makes everything else possible.</p>
-
-  <div class="wf">
-    <p class="wft">IT service request</p>
-    <div class="steps">
-      <div class="step"><span class="sn sn-a">1</span><div class="sb"><p class="sl">Submit</p><p class="ss">User submits via G2 Assist or #it-help. Rovo auto-resolves ~85% of software access requests.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-a">2</span><div class="sb"><p class="sl">Triage</p><p class="ss">Johnny (or Suraj for India) sets priority. IAM tickets → Alex L.; infra/device → Nick.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-a">3</span><div class="sb"><p class="sl">Resolve</p><p class="ss">Engineer resolves per SLA. New patterns → runbook update in Confluence.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-a">4</span><div class="sb"><p class="sl">Close</p><p class="ss">Ticket closed in Jira SM. Metrics roll up to weekly State of IT.</p></div></div>
-    </div>
-  </div>
-
-  <div class="wf">
-    <p class="wft">Employee onboarding / offboarding</p>
-    <div class="steps">
-      <div class="step"><span class="sn sn-a">1</span><div class="sb"><p class="sl">HR trigger</p><p class="ss">People team submits ticket with start/end date, role, location, and manager.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-a">2</span><div class="sb"><p class="sl">Device</p><p class="ss">Nick stages MacBook via ABM. Suraj handles India. Ships 5 days before start.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-a">3</span><div class="sb"><p class="sl">Access</p><p class="ss">Alex L. creates Okta account, assigns groups, provisions JIT/SCIM apps. 1Password Day 1.</p></div><span class="arr">›</span></div>
-      <div class="step"><span class="sn sn-a">4</span><div class="sb"><p class="sl">Offboard</p><p class="ss">Okta suspended immediately. Kandji MDM wipe. SaaS de-provisioned. Asset logged in Oomnitza.</p></div></div>
-    </div>
-  </div>
-</div>
+</body>
+</html>
